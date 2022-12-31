@@ -1,13 +1,42 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import App from "./App";
+import { getAllUsers } from "./redux/slicer/userSlice";
+import { persistor, store } from "./redux/store";
+import reportWebVitals from "./reportWebVitals";
+import uuid from "./util/uuid";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
+store.dispatch(
+  getAllUsers([
+    {
+      id: uuid(),
+      userName: "vahid",
+      email: "vahid@gmail.com",
+      password: "vahid1234",
+      token: "",
+      role: "admin"
+    },
+    {
+      id: uuid(),
+      userName: "reza",
+      email: "reza@gmail.com",
+      password: "reza1234",
+      token: "",
+      role: "user"
+    },
+  ])
+);
+
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
+    </Provider>
   </React.StrictMode>
 );
 
